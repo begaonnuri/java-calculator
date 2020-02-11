@@ -1,13 +1,16 @@
 import calculator.Calculator;
-import io.ConsoleInput;
-import io.ConsoleOutput;
+
+import static io.ConsoleInput.inputExpression;
+import static io.ConsoleOutput.*;
 
 public class Application {
     public static void main(String[] args) {
-        ConsoleInput consoleInput = new ConsoleInput();
-        ConsoleOutput consoleOutput = new ConsoleOutput();
-        Calculator calculator = new Calculator();
+        printStartMessage();
 
-        calculator.run(consoleInput, consoleOutput);
+        Calculator calculator = new Calculator();
+        Double userResult = calculator.run(inputExpression());
+
+        printResult(userResult);
+        printEndMessage();
     }
 }
