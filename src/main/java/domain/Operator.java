@@ -1,5 +1,8 @@
 package domain;
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.BiFunction;
 
 public enum Operator {
@@ -10,26 +13,24 @@ public enum Operator {
 
     private String symbol;
     private BiFunction<Double, Double, Double> operate;
+    private static Map<String, Operator> operators = getOperators();
 
     Operator(String symbol, BiFunction<Double, Double, Double> operate) {
         this.symbol = symbol;
         this.operate = operate;
     }
 
-    public static Operator hasOperator(String symbol) {
-        if (Operator.PLUS.symbol.equals(symbol)) {
-            return Operator.PLUS;
+    public static Operator from(String symbol) {
+        if (!operators.containsKey(symbol)) {
+            throw new OperatorException();
         }
-        if (Operator.MINUS.symbol.equals(symbol)) {
-            return Operator.MINUS;
-        }
-        if (Operator.MULTIPLY.symbol.equals(symbol)) {
-            return Operator.MULTIPLY;
-        }
-        if (Operator.DIVIDE.symbol.equals(symbol)) {
-            return Operator.DIVIDE;
-        }
-        throw new ExpressionException(ExpressionException.INVALID_OPERATION);
+        return operators.get(symbol);
+    }
+
+    private static Map<String, Operator> getOperators() {
+        Map<String, Operator> operators = new HashMap<>();
+        Arrays.stream(Operator.values()).forEach(operator -> operators.put(operator.symbol, operator));
+        return operators;
     }
 
     public double calculate(double prev, double next) {

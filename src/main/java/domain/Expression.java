@@ -61,6 +61,10 @@ public class Expression {
     }
 
     private Operator tokenToOperator(String token) {
-        return Operator.hasOperator(token);
+        try {
+            return Operator.from(token);
+        } catch (IllegalArgumentException e) {
+            throw new ExpressionException(ExpressionException.INVALID_OPERATION);
+        }
     }
 }
